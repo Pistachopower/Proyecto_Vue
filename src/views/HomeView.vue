@@ -1,85 +1,97 @@
 <template>
-  <div class="container">
-    <h1>Home</h1>
-    <p>Bienvenido a la aplicación Deezer Music Client.</p>
-    <p>
-      Este proyecto sirve de base para la aplicación a desarrollar como tarea
-      del curso.
-    </p>
-    <p>
-      Para facilitar el desarrollo, este proyecto ya viene configruado con
-      Bootstrap, Bootstrap Icons, SASS, router y Pinia
-    </p>
-  </div>
-  <div class="row">
-    <div class="col-md-6"><h1>Bootstrap Icons</h1>
-    <p>Bootstrap Icons es una biblioteca de iconos creada por el equipo de Bootstrap. Proporciona una colección de iconos SVG gratuitos y de código abierto que se pueden utilizar fácilmente en proyectos web.</p>
-    <p class="text-bg-light p-3 border" >
-  <i class="bi bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i> 
-  <code> &lt;i class="bi bi-alarm" style="font-size: 2rem; color: cornflowerblue;"&gt;&lt;/i&gt;</code>
-  <br>
-  <i class="bi bi-battery-half" style="font-size: 2rem; color: darkorange;"></i> 
-  <code> &lt;i class="bi bi-battery-half" style="font-size: 2rem; color: darkorange;"&gt;&lt;/i&gt;</code>
-  <br>
-  <i class="bi bi-cloud-sun" style="font-size: 2rem; color: gold;"></i> 
-  <code> &lt;i class="bi bi-cloud-sun" style="font-size: 2rem; color: gold;"&gt;&lt;/i&gt;</code>
-  <br>
-  <i class="bi bi-emoji-smile" style="font-size: 2rem; color: green;"></i> 
-  <code> &lt;i class="bi bi-emoji-smile" style="font-size: 2rem; color: green;"&gt;&lt;/i&gt;</code>
-      <p>Puedes encontrar la lista completa de iconos en <a href="https://icons.getbootstrap.com/">su web oficial.</a>
-      </p>
-    </p>
-  </div>
-    <div class="col-md-6 sass-example">
-      <h1>SASS</h1>
-      <p>SASS (Syntactically Awesome Stylesheets) es un preprocesador de CSS que permite escribir hojas de estilo de una manera más eficiente y organizada.</p>
-      <p>Este proyecto ya viene configurado con SASS, por lo que puedes empezar a utilizarlo en tus estilos de inmediato.</p>
-      <p class="psass">
-    SASS  es un preprocesador CSS que agrega características como:
-    <ul>
-      <li>Anidación de estilos</li>
-      <li>Variables</li>
-      <li>Mixins</li>
-      <li>Herencia</li>
-    </ul>
-    Todo esto mejora la mantenibilidad del código CSS.
-  </p>
+  <div>
+    <h1>Búsqueda de canciones en Deezer</h1>
+    <!-- Componente SearchBar para búsqueda (solo afecta al grid, no al carrusel) -->
+    <SearchBar @results="handleResults" />
+
+     <!-- MOSTRAR CANCIONES AL HACER LA BÚSQUEDA -->
+    <div class="song-cards" v-if="songs.length > 0">
+      <div v-for="song in songs" :key="song.id">
+        <img :src="song.album.cover_small" alt="Porta del álbum">  <strong>{{ song.title }}</strong> - <button @click="toggleFavorite(song)">
+              {{
+                isFavorite(song.id)
+                  ? "💙"
+                  : "🤍"
+              }}
+            </button> - <audio :src="song.preview" controls></audio> - {{ song.artist.name }} - {{ song.album.title }} - {{ Math.floor(song.duration / 60) }}:{{ song.duration % 60 < 10 ? "0" : "" }}{{ song.duration % 60 }}
+      </div>
+    </div>
+
+    <br>
+
+
+    <!-- MOSTRAR CANCIONES DESTACADAS -->
+    <SongCarousel />
+
+
+    
+    <!-- MOSTRAR GRID DE CANCIONES DESTACADAS -->
+    
+    
+
+    
+    <div class="container mt-4">
+      <p>Bienvenido a la aplicación Deezer Music Client.</p>
+      <p>Este proyecto sirve de base para la aplicación a desarrollar como tarea del curso.</p>
+      <p>Para facilitar el desarrollo, este proyecto ya viene configurado con Bootstrap, Bootstrap Icons, SASS, router y Pinia.</p>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+import SearchBar from '../components/SearchBar.vue'; // Componente de búsqueda
+import SongCarousel from '../components/SongCarousel.vue'; // Componente de carrusel
+import { useFavoritesStore } from '@/stores/favorites'; // Store para favoritos
+
+const songs = ref([]); // Estado para las canciones filtradas según la búsqueda
+const favoritesStore = useFavoritesStore();
+
+
+// Función para manejar los resultados de búsqueda (solo afecta al grid)
+const handleResults = (data) => {
+  songs.value = data.slice(0,6); // Filtramos las canciones que se muestran en el grid
+};
+
+// Comprobamos si la canción está en favoritos
+const toggleFavorite = (song) => {
+  if (favoritesStore.isFavorite(song.id)) {
+    favoritesStore.removeSong(song.id);
+  } else {
+    favoritesStore.addSong(song);
+  }
+};
+
+// Función para verificar si la canción está en favoritos
+const isFavorite = (id) => favoritesStore.isFavorite(id);
+
+</script>
 
 <style scoped>
-h1 {
+h1, h2 {
   color: #007bff;
 }
-.sass-example {
-  .psass {
-    font-size: 16px;
-    line-height: 1.5;
-    color: #333;
-    padding: 10px;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
 
-    ul {
-      margin-top: 10px;
-      padding-left: 20px;
-      list-style-type: square;
-
-      li {
-        margin-bottom: 5px;
-        color: #555;
-        font-weight: bold;
-
-        &:hover {
-          color: #007bff; 
-          text-decoration: underline;
-        }
-      }
-    }
-  }
+.card-img-top {
+  width: 100%;
+  height: auto;
 }
 
+.card-body {
+  text-align: center;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+button {
+  background: none;
+  border: none;
+  color: #007bff;
+}
+
+button:hover {
+  cursor: pointer;
+}
 </style>
