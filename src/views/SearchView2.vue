@@ -1,107 +1,106 @@
 <template>
-    <div>
-      <h1>Búsqueda de canciones en Deezer</h1>
-      <!-- Componente hijo -->
-      <SearchBar @results="handleResults" />
-       <!-- Lista de canciones -->
-      <ul v-if="songs.length > 0">
-        <li v-for="song in songs" :key="song.id">
-          <img :src="song.album.cover_small" alt="Porta del álbum">  <strong>{{ song.title }}</strong> - <button @click="toggleFavorite(song)">
-              {{
-                isFavorite(song.id)
-                  ? "💙"
-                  : "🤍"
-              }}
-            </button> - <audio :src="song.preview" controls></audio> - {{ song.artist.name }} - {{ song.album.title }} - {{ Math.floor(song.duration / 60) }}:{{ song.duration % 60 < 10 ? "0" : "" }}{{ song.duration % 60 }}
-        </li>
-      </ul>
-      <p v-else>No hay resultados para mostrar</p>
+  <div>
+    <h1>Búsqueda de canciones en Deezer</h1>
+    <!-- Componente hijo -->
+    <SearchBar @results="handleResults" />
+
+    <!-- Tabla de canciones -->
+    <div class="table-responsive mt-4" v-if="songs.length > 0">
+      <table class="table table-striped table-bordered">
+        <thead class="table-primary">
+          <tr>
+            <th>Portada</th>
+            <th>Título</th>
+            <th>Favorito</th>
+            <th>Preview</th>
+            <th>Artista</th>
+            <th>Álbum</th>
+            <th>Duración</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr v-for="song in songs" :key="song.id">
+            <td class="text-center">
+              <img :src="song.album.cover_small" alt="Portada del álbum" style="width: 50px; height: 50px;"/>
+            </td>
+
+            <td><strong>{{ song.title }}</strong></td>
+
+            <td class="text-center">
+              <button class="btn btn-link" @click="toggleFavorite(song)">
+                <i :class="isFavorite(song.id) ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
+              </button>
+              
+            </td>
+
+            <td class="text-center">
+              <button class="btn btn-link" @click="setCurrentSong(song)">
+                <i class="bi bi-play-circle"></i>
+              </button>
+            </td>
+
+            <td>{{ song.artist.name }}</td>
+            <td>{{ song.album.title }}</td>
+
+            <td class="text-center">
+              {{ Math.floor(song.duration / 60) }}:{{ song.duration % 60 < 10 ? "0" : "" }}{{ song.duration % 60 }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <MusicPlayer v-if="currentSong" :song="currentSong" />
     </div>
+  </div>
 
-    <p>
-      Para que salgan los resultados debes entrar en
-      <a href="https://cors-anywhere.herokuapp.com/corsdemo"
-        >https://cors-anywhere.herokuapp.com/corsdemo</a
-      >
-    </p>
-    
-  </template>
+  <p>
+    Para que salgan los resultados debes entrar en
+    <a href="https://cors-anywhere.herokuapp.com/corsdemo">https://cors-anywhere.herokuapp.com/corsdemo</a>
+  </p>
+  
+</template>
 
-  <script setup>
-    import { ref } from "vue";
-    import SearchBar from "../components/SearchBar.vue"; // Importa el componente hijo
-    import { useFavoritesStore } from '@/stores/favorites';
+<script setup>
+  import { ref } from "vue";
+  import SearchBar from "../components/SearchBar.vue"; // Importa el componente hijo
+  import { useFavoritesStore } from '@/stores/favorites';
+  import MusicPlayer from "@/components/MusicPlayer.vue";
 
-    const songs = ref([]); // Estado para almacenar la lista de canciones
-    const favoritesStore = useFavoritesStore();
-     
+  const songs = ref([]); // Estado para almacenar la lista de canciones
+  const favoritesStore = useFavoritesStore();
+  const currentSong = ref(null); // Canción actualmente en reproducción
+   
 
-    // Maneja los resultados emitidos por el componente hijo
-    const handleResults = (data) => {
-      songs.value = data; // Actualiza la lista de canciones
-    };
+  // Maneja los resultados emitidos por el componente hijo
+  const handleResults = (data) => {
+    songs.value = data; // Actualiza la lista de canciones
+  };
 
 
-    //Comprobamos si la canción la tenemos en favoritos
-    const toggleFavorite = (song) => {
-      if (favoritesStore.isFavorite(song.id)) {
-        favoritesStore.removeSong(song.id);
-      } else {
-        favoritesStore.addSong(song);
-      }
-    };
+  // Cambiar la canción actual en el MusicPlayer
+  const setCurrentSong = (song) => {
+    currentSong.value = song; // Establece la canción seleccionada
+  };
 
-    const isFavorite = (id) => favoritesStore.isFavorite(id);
-  </script>
+
+  //Comprobamos si la canción la tenemos en favoritos
+  const toggleFavorite = (song) => {
+    if (favoritesStore.isFavorite(song.id)) {
+      favoritesStore.removeSong(song.id);
+    } else {
+      favoritesStore.addSong(song);
+    }
+  };
+
+  const isFavorite = (id) => favoritesStore.isFavorite(id);
+</script>
 
 <style scoped>
 h1 {
-  color: #dc3545;
-}
-.search-page {
-  padding: 20px;
+color: #dc3545;
 }
 
-.album-info {
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 10px;
-}
-
-.album-info img {
-  margin-top: 10px;
-  width: 200px;
-  border-radius: 10px;
-}
-
-.songs {
-  margin-top: 20px;
-}
-
-.song-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
-
-.song-card {
-  padding: 10px;
-  border: 1px solid #007bff;
-  border-radius: 10px;
-  background-color: #e9ecef;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.song-card audio {
-  margin-top: 10px;
-  width: 100%;
-}
-
-button {
-  background: none;
-  border: none;
+table td {
+vertical-align: middle;
 }
 </style>
