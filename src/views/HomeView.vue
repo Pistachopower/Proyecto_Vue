@@ -20,6 +20,7 @@
             </tr>
           </thead>
 
+          <!--tabla de búsqueda-->
           <tbody>
             <tr v-for="song in songs" :key="song.id">
               <td class="text-center">
