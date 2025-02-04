@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <WelcomeModal v-if="mostrarModal" :mostrar="mostrarModal" @cerrar="mostrarModal=false"/>
+
     <!-- Header -->
     <header class="bg-primary text-white py-3">
       <div class="container text-center">
@@ -8,11 +10,12 @@
     </header>
 
     <!-- Menu -->
-    <Menu />
+    <Menu/>
 
     <!-- Main Content -->
     <main class="container my-4">
       <router-view />
+      
     </main>
 
 
@@ -28,10 +31,25 @@
 
 
 <script setup>
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { RouterLink, RouterView } from 'vue-router'
   import Menu from "./components/menu.vue";
   import MusicPlayer from "./components/MusicPlayer.vue";
+  import WelcomeModal from "./components/WelcomeModal.vue";
+
+  const mostrarModal= ref(true);
+
+  onMounted(() => {
+    //
+    const user= localStorage.getItem('user');
+    if(user){
+      mostrarModal.value= false;
+      
+
+    }
+  }
+
+  );
 </script>
 
 
