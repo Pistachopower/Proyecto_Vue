@@ -41,7 +41,7 @@ const albumData = ref({}); // Guardará los datos del álbum
 // Función para obtener datos del álbum desde la API de Deezer
 const fetchAlbumData = async () => {
   try {
-    const response = await fetch('https://cors-anywhere.herokuapp.com/https://api.deezer.com/album/586206062');
+    const response = await fetch('http://localhost:8080/https://api.deezer.com/album/586206062');
     if (!response.ok) throw new Error('Error al obtener los datos');
       albumData.value = await response.json();
   } catch (error) {

@@ -6,7 +6,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import './assets/my_bootstrap.scss' //Si utilizo SASS la descomento
+import 'bootstrap/dist/css/bootstrap.min.css'; //Si utilizo SASS la comento
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
