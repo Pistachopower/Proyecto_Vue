@@ -1,11 +1,10 @@
 <template>
   <div v-if="mostrar" class="modal fade show d-block" tabindex="-1" aria-modal="true" role="dialog">
-    <div class="modal-overlay" @click="cerrarModal">
+    <div class="modal-overlay">
       <div class="modal-dialog modal-dialog-centered" @click.stop>
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Bienvenido a la aplicación</h5>
-            <button type="button" class="btn-close" @click="cerrarModal"></button>
           </div>
           <div class="modal-body">
             <form @submit.prevent="handleSubmit">
@@ -16,9 +15,9 @@
               <div class="mb-3">
                 <label for="avatar" class="form-label">Selecciona un avatar:</label>
                 <select v-model="avatar" id="avatar" class="form-select" required>
-                  <option value="avatar1">Avatar 1</option>
-                  <option value="avatar2">Avatar 2</option>
-                  <option value="avatar3">Avatar 3</option>
+                  <option value="https://i.pravatar.cc/150?img=3">Avatar 1</option>
+                  <option value="https://i.pravatar.cc/">Avatar 2</option>
+                  <option value="https://i.pravatar.cc/">Avatar 3</option>
                 </select>
               </div>
               <button type="submit" class="btn btn-primary w-100">Guardar</button>
@@ -31,18 +30,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const username = ref('');
 const avatar = ref('avatar1');
 
-const emit = defineEmits(['register', 'cerrar']); // Agregamos evento para cerrar
-
+const emit = defineEmits(['cerrar']);
 const props = defineProps({
   mostrar: Boolean
 });
 
-console.log('Props recibidas:', props);
 
 
 const handleSubmit = () => {
@@ -52,14 +49,11 @@ const handleSubmit = () => {
   };
 
   localStorage.setItem('user', JSON.stringify(userData));
-
-  emit('register'); // Emitimos evento cuando el usuario se registre
-  cerrarModal(); // Cerramos el modal
+  window.location.href = '/'; // Recarga la página y redirige a la raíz
 };
 
-const cerrarModal = () => {
-  emit('cerrar'); // Emitimos evento para que el padre lo cierre
-};
+
+
 </script>
 
 <style scoped>
