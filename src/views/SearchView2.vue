@@ -4,6 +4,9 @@
     <!-- Componente hijo -->
     <SearchBar @results="handleResults" />
 
+     <!-- Resultados de la búsqueda -->
+     <SearchResults :results="searchResults" />
+
     <!-- Tabla de canciones -->
     <div class="table-responsive mt-4" v-if="songs.length > 0">
       <table class="table table-striped table-bordered">
