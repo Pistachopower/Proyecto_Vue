@@ -26,6 +26,11 @@ const routes = [
     name: 'Buscador2',
     component: SearchView2,
   },
+  // {
+  //   path: '/artist/:id',
+  //   name: 'InfoView',
+  //   component: InfoView,
+  // }
 ];
 
 const router = createRouter({

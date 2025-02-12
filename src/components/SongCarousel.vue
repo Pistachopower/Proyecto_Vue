@@ -52,7 +52,7 @@
   // Función para obtener las canciones destacadas de la API
   const fetchFeaturedSongs = async () => {
     try {
-      const response = await fetch('https://cors-anywhere.herokuapp.com/https://api.deezer.com/chart');
+      const response = await fetch('http://localhost:8080/https://api.deezer.com/chart');
       if (!response.ok) {
         throw new Error('Error al obtener las canciones destacadas');
       }
