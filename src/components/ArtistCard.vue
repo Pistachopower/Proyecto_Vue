@@ -1,19 +1,40 @@
 <template>
-    <div class="artist-card">
-      <!-- Imagen del artista -->
-      <img :src="artist?.picture_medium || ''" alt="Imagen del artista" class="artist-image" />
-  
-      <!-- Información del artista -->
+  <div class="artist-card-container container">
+
+    <!-- Información del artista -->
+    <div class="artist-header d-flex align-items-center gap-4">
+      <img :src="artist.picture_medium" alt="Artist image" class="artist-image" />
       <div class="artist-info">
-        <h5>{{ artist?.name || 'Nombre del Artista' }}</h5>
-        <p>{{ artist?.nb_album || 0 }} álbumes</p>
+        <h1>{{ artist.name }}</h1>
+        <p class="text-secondary">{{ artist.nb_fan }} fans</p>
       </div>
-  
-      <!-- Botón opcional para más detalles -->
-      <button class="btn btn-link" @click="handleClick">
-        <i class="bi bi-person-circle"></i> Ver más
-      </button>
     </div>
+
+    <!-- Canciones Populares -->
+    <div class="songs-section mt-5">
+      <h2>Canciones Populares</h2>
+      <!-- Usamos el componente SongCard para las canciones -->
+      <div class="list-group my-4" v-if="topSongs.length > 0">
+        <SongCard v-for="song in topSongs" :key="song.id" :song="song" />
+      </div>
+    </div>
+
+    <!-- Álbumes del artista -->
+    <div class="albums-section mt-5">
+      <h2>Álbumes</h2>
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="col" v-for="album in albums.splice(0,8)" :key="album.id">
+          <div class="card">
+            <img :src="album.cover_medium" class="card-img-top" :alt="album.title" />
+            <div class="card-body">
+              <h5 class="card-title">{{ album.title }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
   </template>
   
   <script setup>

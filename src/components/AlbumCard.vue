@@ -1,4 +1,6 @@
 <template>
+    <RouterLink :to="'/album/' + album.id" class="album-link">
+
     <div class="album-card">
       <!-- Carátula del álbum -->
       <img :src="album?.cover_medium || ''" alt="Portada del álbum" class="album-cover" />
@@ -14,6 +16,8 @@
         <i class="bi bi-play-circle"></i> Ver más
       </button>
     </div>
+  </RouterLink>
+    
   </template>
   
   <script setup>

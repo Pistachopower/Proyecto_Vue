@@ -2,7 +2,7 @@
   <div>
     <h1>Búsqueda de canciones en Deezer</h1>
 
-    <!-- Componente SearchBar para búsqueda (solo afecta al grid, no al carrusel) -->
+    <!-- Componente SearchBar para búsqueda -->
     <SearchBar @results="handleResults" />
 
      <!-- Tabla de canciones -->
@@ -60,15 +60,6 @@
     <SongCarousel />
 
     
-    <!-- COLOCAMOS AQUI EL REPRODUCTOR PARA QUE SE COLOQUE ENCIMA DE NUESTRO CARRUSEL -->
-    <!-- <MusicPlayer :song="currentSong" /> -->
-    
-    
-    <div class="container mt-4">
-      <p>Bienvenido a la aplicación Deezer Music Client.</p>
-      <p>Este proyecto sirve de base para la aplicación a desarrollar como tarea del curso.</p>
-      <p>Para facilitar el desarrollo, este proyecto ya viene configurado con Bootstrap, Bootstrap Icons, SASS, router y Pinia.</p>
-    </div>
   </div>
 </template>
 
@@ -76,10 +67,11 @@
   import { ref } from 'vue';
   import SearchBar from '../components/SearchBar.vue'; // Componente de búsqueda
   import SongCarousel from '../components/SongCarousel.vue'; // Componente de carrusel
+  import FeaturedArtists from '../components/FeaturedArtists.vue';
   import { useFavoritesStore } from '@/stores/favorites'; // Store para favoritos
-  //import MusicPlayer from "@/components/MusicPlayer.vue";
+  import MusicPlayer from "@/components/MusicPlayer.vue";
   import { useMusicStore } from "@/stores/music";
-  
+  import SongCard from '@/components/SongCard.vue';
   const songs = ref([]); // Estado para las canciones filtradas según la búsqueda
   const favoritesStore = useFavoritesStore();
   //const currentSong = ref(null); // Canción actualmente en reproducción

@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Buscador</h1>
+    <SearchBar @results="handleResults" />
     <p>Busca canciones, artistas o álbumes.</p>
     <p>En esta sección ya se ha configurado una llamada a la API pública de Deezer.</p>
     <p>Para que salgan los resultados debes entrar en <a href="https://cors-anywhere.herokuapp.com/corsdemo">https://cors-anywhere.herokuapp.com/corsdemo</a></p>
@@ -34,7 +35,20 @@
 </template>
 
 <script setup>
+import SearchBar from '../components/SearchBar.vue'; // Componente de búsqueda
 import { ref, onMounted } from 'vue';
+
+const setCurrentSong = (song) => {
+    musicStore.setCurrentSong(song);  // Cambia la canción en el reproductor global
+  };
+
+
+  // Maneja los resultados emitidos por el componente hijo
+  const handleResults = (data) => {
+    songs.value = data; // Actualiza la lista de canciones
+  };
+
+
 
 const albumData = ref({}); // Guardará los datos del álbum
 

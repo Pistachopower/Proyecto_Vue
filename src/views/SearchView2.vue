@@ -22,10 +22,18 @@
         <tbody>
           <tr v-for="song in songs" :key="song.id">
             <td class="text-center">
-              <img :src="song.album.cover_small" alt="Portada del álbum" style="width: 50px; height: 50px;"/>
+              <router-link :to="'/info-detail/' + song.album.type + '/' + song.album.id">
+                <img :src="song.album.cover_small" alt="Portada del álbum" style="width: 50px; height: 50px;"/>
+              </router-link>            
             </td>
 
-            <td><strong>{{ song.title }}</strong></td>
+            <td><strong>
+
+              <router-link :to="'/info-detail/' + song.type + '/' + song.id">
+                {{ song.title }}
+              </router-link>  
+            </strong></td>
+
 
             <td class="text-center">
               <button class="btn btn-link" @click="toggleFavorite(song)">
@@ -40,8 +48,18 @@
               </button>
             </td>
 
-            <td>{{ song.artist.name }}</td>
-            <td>{{ song.album.title }}</td>
+            <td>
+              <router-link :to="'/info-detail/' + song.artist.type + '/' + song.artist.id">
+              {{ song.artist.name }}
+              </router-link>  
+            </td>
+
+            <td>
+              <router-link :to="'/info-detail/' + song.album.type + '/' + song.album.id">
+                {{ song.album.title }}
+              </router-link>  
+
+            </td>
 
             <td class="text-center">
               {{ Math.floor(song.duration / 60) }}:{{ song.duration % 60 < 10 ? "0" : "" }}{{ song.duration % 60 }}
@@ -65,8 +83,10 @@
   import SearchBar from "../components/SearchBar.vue"; // Importa el componente hijo
   import { useFavoritesStore } from '@/stores/favorites';
   import MusicPlayer from "@/components/MusicPlayer.vue";
+  import { useMusicStore } from "@/stores/music"; // Store global de música
 
   const songs = ref([]); // Estado para almacenar la lista de canciones
+  const musicStore = useMusicStore(); // Usamos la store para manejar la canción globalmente
   const favoritesStore = useFavoritesStore();
   const currentSong = ref(null); // Canción actualmente en reproducción
  

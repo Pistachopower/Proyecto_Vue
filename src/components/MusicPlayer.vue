@@ -1,15 +1,15 @@
 <template>
-  <div class="music-player">
+  <div class="music-player d-flex">
       <!-- Información de la canción -->
       <div class="left-section">
           <img :src="song?.album?.cover_medium || 'https://static.vecteezy.com/system/resources/thumbnails/009/393/830/small/black-vinyl-disc-record-for-music-album-cover-design-free-png.png'" alt="Portada del álbum" />
           
-          <div>
+          <div class="song-info">
               <h5>{{ song?.title || '' }}</h5>
               <p>{{ song?.artist?.name || '' }}</p>
           </div>
           
-          <button v-if="song" class="btn btn-link ms-2" @click="toggleFavorite(song)">
+          <button v-if="song" class="btn-favorite" @click="toggleFavorite(song)">
               <i :class="isFavorite(song?.id) ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
           </button>
       </div>
@@ -17,26 +17,25 @@
       <!-- Controles de reproducción -->
       <div class="center-section">
           <div class="controls">
-            <button @click="seekBackward">
-              <i class="bi bi-skip-start-fill"></i> <!-- Icono de retroceder -->
+            <button @click="seekBackward" class="control-btn">
+              <i class="bi bi-skip-start-fill"></i>
             </button>
 
-            <button @click="togglePlayback">
+            <button @click="togglePlayback" class="control-btn">
               <i :class="isPlaying ? 'bi bi-pause-fill' : 'bi bi-play-fill'"></i>
             </button>
 
-            <!-- Botón de adelantar -->
-            <button @click="seekForward">
-              <i class="bi bi-skip-end-fill"></i> <!-- Icono de adelantar -->
+            <button @click="seekForward" class="control-btn">
+              <i class="bi bi-skip-end-fill"></i>
             </button>
           </div>
       
           <!-- Barra de progreso -->
-          <input type="range" min="0" :max="duration" step="0.1" v-model="currentTime" @input="seek"/>
+          <input type="range" min="0" :max="duration" step="0.1" v-model="currentTime" @input="seek" class="progress-bar" />
       </div>
 
       <!-- Control de volumen -->
-      <div class="right-section me-4">
+      <div class="right-section">
           <i class="bi bi-volume-up me-3"></i>
           <input type="range" min="0" max="1" step="0.01" v-model="volume" @input="updateVolume" class="volume-slider" />
       </div>
@@ -145,70 +144,119 @@ if (audio.value) {
 .music-player {
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
-  background-color: #222;
+  background-color: #2b2b2b;
   color: white;
   display: flex;
   align-items: center;
-  padding: 12px 20px;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+  justify-content: space-between; /* Espacio uniforme entre las secciones */
+  padding: 2px 20px;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Sección izquierda con tamaño fijo */
 .left-section {
   display: flex;
   align-items: center;
+  width: 200px; /* Tamaño fijo para que no se mueva */
 }
 
+/* Imagen del álbum */
 .left-section img {
-  height: 60px;
+  height: 50px;
   object-fit: cover;
-  border-radius: 5px;
-  margin-right: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
-.left-section h5 {
-  margin: 0;
-  font-size: 16px;
+.song-info {
+  margin-left: 17px;
+  align-items: center;
+  white-space: nowrap; /* Evita que el texto salte a otra línea */
 }
 
-.left-section p {
-  margin: 0;
+.song-info h5 {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.song-info p {
   font-size: 14px;
-  color: #bbb;
+  color: #b0b0b0;
+  margin: 0;
 }
 
+/* Botón de favoritos */
+.btn-favorite {
+  background: none;
+  border: none;
+  color: #ff6f61;
+  font-size: 20px;
+  transition: color 0.3s ease;
+  margin-left: 15px;
+}
+
+.btn-favorite:hover {
+  color: #ff3838;
+}
+
+/* Sección central ocupa todo el espacio disponible */
 .center-section {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
-.center-section input[type="range"] {
-  width: 60%;
+/* Botones de control */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 .controls button {
   background: none;
   border: none;
   color: white;
-  font-size: 25px;
+  font-size: 30px;
   cursor: pointer;
+  transition: transform 0.1s ease, color 0.2s ease;
 }
 
 .controls button:hover {
-  color: #ccc;
+  color: #d6ec70;
+  transform: scale(1.1);
+}
+
+/* Barra de progreso siempre centrada */
+.progress-bar {
+  width: 40%;
+  margin: 10px auto;
+  height: 6px;
+  border-radius: 5px;
+}
+
+/* Sección derecha con tamaño fijo */
+.right-section {
+  display: flex;
+  align-items: center;
+  width: 200px; /* Tamaño fijo */
+  justify-content: flex-end; /* Para que el volumen se quede a la derecha */
+}
+
+.right-section i {
+  font-size: 22px;
 }
 
 .volume-slider {
   width: 100px;
+  height: 5px;
+  margin-left: 5px;
+  margin-right: 10px;
 }
 
-.right-section {
-  display: flex;
-  align-items: center;
-}
 
-.right-section i {
-  font-size: 20px;
-}
 </style>

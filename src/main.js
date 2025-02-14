@@ -13,7 +13,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const app = createApp(App)
 
-app.use(createPinia())
-app.use(router)
+app.use(createPinia()) //Habilita Pinia
+app.use(router) // Habilita Vue Router
 
-app.mount('#app')
+app.mount('#app') // Monta la app en el div con id="app"

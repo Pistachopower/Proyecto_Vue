@@ -14,8 +14,7 @@
 
     <!-- Main Content -->
     <main class="container my-4">
-      <router-view />
-      
+      <router-view /> 
     </main>
 
 
@@ -44,8 +43,6 @@
     const user= localStorage.getItem('user');
     if(user){
       mostrarModal.value= false;
-      
-
     }
   }
 
