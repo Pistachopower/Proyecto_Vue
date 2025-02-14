@@ -2,8 +2,13 @@
     <div class="search-results">
       <!-- Resultados de canciones -->
       <div v-if="songs.length">
+<<<<<<< HEAD
         <h3 class="my-4">Canciones</h3>
         <div class="results-list song-list">
+=======
+        <h3>Canciones</h3>
+        <div class="results-list">
+>>>>>>> 58dbfa4147743047aec83451490c1a9e5a309a50
           <div v-for="song in songs" :key="song.id">
             <SongCard :song="song" />
           </div>
@@ -29,10 +34,27 @@
           </div>
         </div>
       </div>
+<<<<<<< HEAD
     </div>
   </template>
   
 <script setup>
+=======
+  
+      <!-- Resultados de artistas -->
+      <div v-if="artists.length">
+        <h3>Artistas</h3>
+        <div class="results-list">
+          <div v-for="artist in artists" :key="artist.id">
+            <ArtistCard :artist="artist" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+  <script setup>
+>>>>>>> 58dbfa4147743047aec83451490c1a9e5a309a50
   import { defineProps, ref, computed } from 'vue';
   import SongCard from './SongCard.vue';
   import AlbumCard from './AlbumCard.vue';
@@ -47,16 +69,28 @@
   const songs = computed(() => props.results.filter(item => item.type === 'track'));
   const albums = computed(() => props.results.filter(item => item.type === 'album'));
   const artists = computed(() => props.results.filter(item => item.type === 'artist'));
+<<<<<<< HEAD
 </script>
   
 <style scoped>
   .search-results {
     margin-top: 20px;
     color: white;
+=======
+  
+  // Si quisieras enlazar cada resultado a su página de detalles (InfoView),
+  // puedes hacer uso del enrutador de Vue Router.
+  </script>
+  
+  <style scoped>
+  .search-results {
+    margin-top: 20px;
+>>>>>>> 58dbfa4147743047aec83451490c1a9e5a309a50
   }
   
   .results-list {
     display: grid;
+<<<<<<< HEAD
     gap: 20px;
   }
 
@@ -70,6 +104,10 @@
 
   .artist-list {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+=======
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+>>>>>>> 58dbfa4147743047aec83451490c1a9e5a309a50
   }
   
   h3 {
@@ -80,5 +118,9 @@
   .card {
     cursor: pointer;
   }
+<<<<<<< HEAD
 </style>
+=======
+  </style>
+>>>>>>> 58dbfa4147743047aec83451490c1a9e5a309a50
   
