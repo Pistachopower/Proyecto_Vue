@@ -101,5 +101,26 @@ function guardarCancionStore(song) {
 </script>
 
 <style scoped>
+h1 {
+  color: #dc3545;
+}
 
+.table td {
+  vertical-align: middle;
+}
+
+.album-cover {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.song-title, .artist-name, .album-title {
+  cursor: pointer;
+  color: #007bff;
+}
+
+.song-title:hover, .artist-name:hover, .album-title:hover {
+  text-decoration: underline;
+}
 </style>

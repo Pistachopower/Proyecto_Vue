@@ -1,29 +1,32 @@
 <template>
-   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
 
+      <!-- Botón de menú responsive -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+
+      <!-- Links de navegación -->
+      <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link class="nav-link" to="/">Inicio</router-link>
+            <router-link class="nav-link" to="/">🏠 Inicio</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/playlists">Playlists</router-link>
+            <router-link class="nav-link" to="/playlists">🎵 Playlists</router-link>
           </li>
-
           <li class="nav-item">
-            <router-link class="nav-link" to="/search2">Descubre</router-link>
+            <router-link class="nav-link" to="/search2">🔍 Descubre</router-link>
           </li>
         </ul>
-        <!-- Sección de usuario -->
-        <div v-if="user" class="d-flex align-items-center">
-          <img :src="user.avatar" alt="Avatar" class="rounded-circle me-2" width="40" height="40" />
-          <span class="me-3">{{ user.name }}</span>
-          <button class="btn btn-outline-danger btn-sm" @click="logout">Logout</button>
+
+        <!-- Usuario (si está logueado) -->
+        <div v-if="user" class="user-info d-flex align-items-center">
+          <img :src="user.avatar" alt="Avatar" class="rounded-circle avatar" />
+          <span class="username">{{ user.name }}</span>
+          <button class="btn btn-outline-light btn-sm ms-2" @click="logout">Salir</button>
         </div>
 
       </div>
@@ -55,11 +58,40 @@ const logout = () => {
 
 </script>
 
+
+
 <style scoped>
-/* .rounded-circle {
-  border: 1px solid #ccc;
-} */
+/* 💡 Mejoras visuales y mobile-first */
+.navbar {
+  padding: 10px 15px;
+}
 
+/* Ajustes para dispositivos móviles */
+@media (max-width: 768px) {
+  .navbar-nav {
+    text-align: center;
+  }
+  .user-info {
+    flex-direction: column;
+    text-align: center;
+  }
+  .username {
+    margin-top: 5px;
+  }
+}
 
+/* Avatar y nombre del usuario */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.username {
+  color: white;
+  font-weight: bold;
+  margin-left: 10px;
+}
  
 </style>

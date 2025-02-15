@@ -1,5 +1,4 @@
 <template>
-  <h1>Info</h1>
   <InfoArtist :artist="song?.artist" />
   <InfoAlbum :album="song?.album" />
   <InfoSong :song="song" />

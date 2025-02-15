@@ -1,13 +1,17 @@
 <!--ESTA ES LA BARRA DE BUSQUEDA -->
 <template>
-  <div class="search-container">
+<form class="search-container" @submit.prevent="searchDeezer">
     <div class="search-input">
-      <input type="text" v-model="searchQuery" @keyup.enter="searchDeezer" placeholder="Buscar en Deezer" />
-      <button @click="searchDeezer">
-        <i class="bi bi-search"></i> <!-- Ícono de búsqueda de Bootstrap -->
+      <input 
+        type="text" 
+        v-model="searchQuery" 
+        placeholder="🔍 Busca tu canción o artista..." 
+      />
+      <button type="submit">
+        <i class="bi bi-search"></i> <!-- Ícono de Bootstrap -->
       </button>
     </div>
-  </div>
+  </form>
 </template>
 
 <script setup>
@@ -44,43 +48,75 @@ const emit = defineEmits(["results"]);
 
 
 <style scoped>
+/* Contenedor centrado */
 .search-container {
   display: flex;
   justify-content: center;
   margin: 20px 0;
 }
 
+/* Caja de búsqueda */
 .search-input {
   width: 90%;
-  max-width: 600px;
-  /* Opcional: limitar el ancho máximo */
+  max-width: 500px;
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  padding: 0;
+  border-radius: 25px;
+  background: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  transition: all 0.3s ease-in-out;
 }
 
+/* Input de texto */
 .search-input input {
   flex: 1;
   border: none;
   outline: none;
-  padding: 10px;
+  padding: 12px 15px;
   font-size: 16px;
-  border-radius: 5px 0 0 5px;
+  border-radius: 25px 0 0 25px;
+  background: #f7f7f7;
+  transition: background 0.3s;
 }
 
+/* Cambiar color cuando el input está activo */
+.search-input input:focus {
+  background: #ffffff;
+}
+
+/* Botón de búsqueda */
 .search-input button {
   border: none;
-  background-color: transparent;
-  padding: 0 10px;
+  background: #007bff;
+  color: white;
+  padding: 12px 15px;
+  font-size: 18px;
+  border-radius: 0 25px 25px 0;
   cursor: pointer;
-  color: #777;
-  font-size: 20px;
+  transition: background 0.3s, transform 0.2s;
 }
 
+/* Efecto hover */
 .search-input button:hover {
-  color: #000;
+  background: #0056b3;
+  transform: scale(1.1);
 }
+
+/* Ícono de búsqueda animado */
+.search-input button i {
+  transition: transform 0.2s;
+}
+
+.search-input button:hover i {
+  transform: rotate(10deg);
+}
+
+/* Diseño mobile-first */
+@media (max-width: 768px) {
+  .search-input {
+    width: 100%;
+  }
+}
+
 </style>
