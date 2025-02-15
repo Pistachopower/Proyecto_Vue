@@ -30,7 +30,7 @@ const routes = [
   },
 
   {
-    path: '/info-detail/:type/:id',
+    path: '/info-detail',
     name: 'InfoView',
     component: InfoView,
   },

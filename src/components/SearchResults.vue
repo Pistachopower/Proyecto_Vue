@@ -2,13 +2,8 @@
     <div class="search-results">
       <!-- Resultados de canciones -->
       <div v-if="songs.length">
-<<<<<<< HEAD
         <h3 class="my-4">Canciones</h3>
         <div class="results-list song-list">
-=======
-        <h3>Canciones</h3>
-        <div class="results-list">
->>>>>>> 58dbfa4147743047aec83451490c1a9e5a309a50
           <div v-for="song in songs" :key="song.id">
             <SongCard :song="song" />
           </div>
@@ -38,7 +33,7 @@
   </template>
   
 <script setup>
-  import { defineProps, ref, computed } from 'vue';
+  import { ref, computed } from 'vue';
   import SongCard from './SongCard.vue';
   import AlbumCard from './AlbumCard.vue';
   import ArtistCard from './ArtistCard.vue';

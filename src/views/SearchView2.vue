@@ -4,8 +4,7 @@
     <!-- Componente hijo -->
     <SearchBar @results="handleResults" />
 
-     <!-- Resultados de la búsqueda -->
-     <SearchResults :results="searchResults" />
+
 
     <!-- Tabla de canciones -->
     <div class="table-responsive mt-4" v-if="songs.length > 0">
@@ -25,16 +24,14 @@
         <tbody>
           <tr v-for="song in songs" :key="song.id">
             <td class="text-center">
-              <router-link :to="'/info-detail/' + song.album.type + '/' + song.album.id">
+              
                 <img :src="song.album.cover_small" alt="Portada del álbum" style="width: 50px; height: 50px;"/>
-              </router-link>            
+              
             </td>
 
-            <td><strong>
+            <td><strong @click="guardarCancionStore(song)">
 
-              <router-link :to="'/info-detail/' + song.type + '/' + song.id">
-                {{ song.title }}
-              </router-link>  
+                {{ song.title }} 
             </strong></td>
 
 
@@ -52,15 +49,20 @@
             </td>
 
             <td>
-              <router-link :to="'/info-detail/' + song.artist.type + '/' + song.artist.id">
-              {{ song.artist.name }}
-              </router-link>  
+              <strong @click="guardarCancionStore(song)">
+                {{ song.artist.name }}
+              </strong>
+             
+              
+             
             </td>
 
             <td>
-              <router-link :to="'/info-detail/' + song.album.type + '/' + song.album.id">
+              <strong @click="guardarCancionStore(song)">
                 {{ song.album.title }}
-              </router-link>  
+              </strong>
+                
+                
 
             </td>
 
@@ -87,11 +89,16 @@
   import { useFavoritesStore } from '@/stores/favorites';
   import MusicPlayer from "@/components/MusicPlayer.vue";
   import { useMusicStore } from "@/stores/music"; // Store global de música
+  import {useInfoStore} from '@/stores/info';
+  import {useRouter} from 'vue-router';
+
 
   const songs = ref([]); // Estado para almacenar la lista de canciones
   const musicStore = useMusicStore(); // Usamos la store para manejar la canción globalmente
   const favoritesStore = useFavoritesStore();
   const currentSong = ref(null); // Canción actualmente en reproducción
+  const infoStore = useInfoStore(); //se inicializa la store de info
+  const router = useRouter(); //se inicializa el router
  
 
   const setCurrentSong = (song) => {
@@ -115,6 +122,12 @@
   };
 
   const isFavorite = (id) => favoritesStore.isFavorite(id);
+
+  function guardarCancionStore (song) {
+    infoStore.setInfoData(song);//guardamos la canción en la store
+    router.push({ name: 'InfoView' });//redirigimos a la vista de info
+  };
+
 </script>
 
 <style scoped>
