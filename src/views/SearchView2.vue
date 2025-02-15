@@ -1,14 +1,11 @@
 <template>
   <div>
-    <h1>Búsqueda de canciones en Deezer</h1>
     <!-- Componente hijo -->
     <SearchBar @results="handleResults" />
 
-
-
     <!-- Tabla de canciones -->
     <div class="table-responsive mt-4" v-if="songs.length > 0">
-      <table class="table table-striped table-bordered">
+      <table class="table table-hover table-bordered">
         <thead class="table-primary">
           <tr>
             <th>Portada</th>
@@ -20,52 +17,36 @@
             <th>Duración</th>
           </tr>
         </thead>
-
         <tbody>
           <tr v-for="song in songs" :key="song.id">
             <td class="text-center">
-              
-                <img :src="song.album.cover_small" alt="Portada del álbum" style="width: 50px; height: 50px;"/>
-              
+              <img :src="song.album.cover_small" alt="Portada del álbum" class="album-cover rounded-circle"/>
             </td>
-
-            <td><strong @click="guardarCancionStore(song)">
-
-                {{ song.title }} 
-            </strong></td>
-
-
+            <td>
+              <strong @click="guardarCancionStore(song)" class="song-title">
+                {{ song.title }}
+              </strong>
+            </td>
             <td class="text-center">
               <button class="btn btn-link" @click="toggleFavorite(song)">
-                <i :class="isFavorite(song.id) ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
+                <i :class="isFavorite(song.id) ? 'bi bi-heart-fill text-danger' : 'bi bi-heart text-muted'"></i>
               </button>
-              
             </td>
-
             <td class="text-center">
               <button class="btn btn-link" @click="setCurrentSong(song)">
-                <i class="bi bi-play-circle"></i>
+                <i class="bi bi-play-circle text-primary"></i>
               </button>
             </td>
-
             <td>
-              <strong @click="guardarCancionStore(song)">
+              <strong @click="guardarCancionStore(song)" class="artist-name">
                 {{ song.artist.name }}
               </strong>
-             
-              
-             
             </td>
-
             <td>
-              <strong @click="guardarCancionStore(song)">
+              <strong @click="guardarCancionStore(song)" class="album-title">
                 {{ song.album.title }}
               </strong>
-                
-                
-
             </td>
-
             <td class="text-center">
               {{ Math.floor(song.duration / 60) }}:{{ song.duration % 60 < 10 ? "0" : "" }}{{ song.duration % 60 }}
             </td>
@@ -75,67 +56,50 @@
       <MusicPlayer v-if="currentSong" :song="currentSong" />
     </div>
   </div>
-
-  <p>
-    Para que salgan los resultados debes entrar en
-    <a href="https://cors-anywhere.herokuapp.com/corsdemo">https://cors-anywhere.herokuapp.com/corsdemo</a>
-  </p>
-  
 </template>
 
 <script setup>
-  import { ref } from "vue";
-  import SearchBar from "../components/SearchBar.vue"; // Importa el componente hijo
-  import { useFavoritesStore } from '@/stores/favorites';
-  import MusicPlayer from "@/components/MusicPlayer.vue";
-  import { useMusicStore } from "@/stores/music"; // Store global de música
-  import {useInfoStore} from '@/stores/info';
-  import {useRouter} from 'vue-router';
+import { ref } from "vue";
+import SearchBar from "../components/SearchBar.vue"; // Importa el componente hijo
+import { useFavoritesStore } from '@/stores/favorites';
+import MusicPlayer from "@/components/MusicPlayer.vue";
+import { useMusicStore } from "@/stores/music"; // Store global de música
+import { useInfoStore } from '@/stores/info';
+import { useRouter } from 'vue-router';
 
+const songs = ref([]); // Estado para almacenar la lista de canciones
+const musicStore = useMusicStore(); // Usamos la store para manejar la canción globalmente
+const favoritesStore = useFavoritesStore();
+const currentSong = ref(null); // Canción actualmente en reproducción
+const infoStore = useInfoStore(); // Se inicializa la store de info
+const router = useRouter(); // Se inicializa el router
 
-  const songs = ref([]); // Estado para almacenar la lista de canciones
-  const musicStore = useMusicStore(); // Usamos la store para manejar la canción globalmente
-  const favoritesStore = useFavoritesStore();
-  const currentSong = ref(null); // Canción actualmente en reproducción
-  const infoStore = useInfoStore(); //se inicializa la store de info
-  const router = useRouter(); //se inicializa el router
- 
+const setCurrentSong = (song) => {
+  musicStore.setCurrentSong(song); // Cambia la canción en el reproductor global
+};
 
-  const setCurrentSong = (song) => {
-    musicStore.setCurrentSong(song);  // Cambia la canción en el reproductor global
-  };
+// Maneja los resultados emitidos por el componente hijo
+const handleResults = (data) => {
+  songs.value = data; // Actualiza la lista de canciones
+};
 
+// Comprobamos si la canción la tenemos en favoritos
+const toggleFavorite = (song) => {
+  if (favoritesStore.isFavorite(song.id)) {
+    favoritesStore.removeSong(song.id);
+  } else {
+    favoritesStore.addSong(song);
+  }
+};
 
-  // Maneja los resultados emitidos por el componente hijo
-  const handleResults = (data) => {
-    songs.value = data; // Actualiza la lista de canciones
-  };
+const isFavorite = (id) => favoritesStore.isFavorite(id);
 
-
-  //Comprobamos si la canción la tenemos en favoritos
-  const toggleFavorite = (song) => {
-    if (favoritesStore.isFavorite(song.id)) {
-      favoritesStore.removeSong(song.id);
-    } else {
-      favoritesStore.addSong(song);
-    }
-  };
-
-  const isFavorite = (id) => favoritesStore.isFavorite(id);
-
-  function guardarCancionStore (song) {
-    infoStore.setInfoData(song);//guardamos la canción en la store
-    router.push({ name: 'InfoView' });//redirigimos a la vista de info
-  };
-
+function guardarCancionStore(song) {
+  infoStore.setInfoData(song); // Guardamos la canción en la store
+  router.push({ name: 'InfoView' }); // Redirigimos a la vista de info
+}
 </script>
 
 <style scoped>
-h1 {
-color: #dc3545;
-}
 
-table td {
-vertical-align: middle;
-}
 </style>

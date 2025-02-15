@@ -19,11 +19,6 @@ const routes = [
     component: PlaylistsView,
   },
   {
-    path: '/search',
-    name: 'Buscador',
-    component: SearchView,
-  },
-  {
     path: '/search2',
     name: 'Buscador2',
     component: SearchView2,

@@ -1,32 +1,24 @@
 <template>
   <div>
-    <h1>Búsqueda de canciones en Deezer</h1>
-
-    <!-- Componente SearchBar para búsqueda -->
-    <SearchBar @results="handleResults" />
-    <br>
-    <!-- MOSTRAR CARRUSEL Y GRID DE CANCIONES DESTACADAS -->
+    <!-- CARRUSEL  -->
     <SongCarousel />
 
-    
+    <p>
+    Para que salgan los resultados debes entrar en
+    <a href="https://cors-anywhere.herokuapp.com/corsdemo">https://cors-anywhere.herokuapp.com/corsdemo</a>
+  </p>
   </div>
 </template>
 
 <script setup>
   import { ref } from 'vue';
-  import SearchBar from '../components/SearchBar.vue'; // Componente de búsqueda
   import SongCarousel from '../components/SongCarousel.vue'; // Componente de carrusel
-  import FeaturedArtists from '../components/FeaturedArtists.vue';
   import { useFavoritesStore } from '@/stores/favorites'; // Store para favoritos
-  import MusicPlayer from "@/components/MusicPlayer.vue";
   import { useMusicStore } from "@/stores/music";
   import SongCard from '@/components/SongCard.vue';
+  
   const songs = ref([]); // Estado para las canciones filtradas según la búsqueda
   const favoritesStore = useFavoritesStore();
-  //const currentSong = ref(null); // Canción actualmente en reproducción
-  
-
-
   const musicStore = useMusicStore();
 
   
@@ -41,34 +33,5 @@
 </script>
 
 <style scoped>
-h1, h2 {
-  color: #007bff;
-}
 
-.card-img-top {
-  width: 100%;
-  height: auto;
-}
-
-.card-body {
-  text-align: center;
-}
-
-.container {
-  margin-top: 20px;
-}
-
-button {
-  background: none;
-  border: none;
-  color: #007bff;
-}
-
-button:hover {
-  cursor: pointer;
-}
-
-table td {
-  vertical-align: middle;
-}
 </style>

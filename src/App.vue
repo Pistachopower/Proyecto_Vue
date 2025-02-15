@@ -4,9 +4,7 @@
 
     <!-- Header -->
     <header class="bg-primary text-white py-3">
-      <div class="container text-center">
-        <h1>Deezer Music Client</h1>
-      </div>
+      <menu />
     </header>
 
     <!-- Menu -->
@@ -54,7 +52,7 @@
 nav{
   border: 1px solid gray;
 }
-$hover-bg-color: #007bff;
+$hover-bg-color: #8a8a8a;
 $hover-text-color: #ffffff;
 li {
     padding: 0.5rem 1rem;
