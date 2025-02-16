@@ -1,6 +1,6 @@
 <!--ESTA ES LA BARRA DE BUSQUEDA -->
 <template>
-<form class="search-container" @submit.prevent="searchDeezer">
+  <form class="search-container" @submit.prevent="searchDeezer">
     <div class="search-input">
       <input 
         type="text" 
@@ -16,8 +16,17 @@
 
 <script setup>
 import { ref } from "vue";
+import {useListaSongs} from "@/stores/buscar"; // Importa el store de canciones
+import {useRouter, useRoute} from 'vue-router';
+import { storeToRefs } from "pinia";
+
+const songsStore = useListaSongs(); // Instancia el store de canciones
 
 const searchQuery = ref(""); // Guarda el valor de la búsqueda
+
+const router = useRouter(); //se inicializa el router
+
+const route = useRoute(); //se inicializa la ruta
 
 // Función para realizar la búsqueda
 const searchDeezer = async () => {
@@ -37,7 +46,16 @@ const searchDeezer = async () => {
 
     const data = await response.json(); //obtenemos el json con los resultados de la busqueda
     
-    emit("results", data.data); // Emitimos los resultados al componente padre
+    songsStore.clearSongs(); // Limpiamos las canciones anteriores
+    // emit("results", data.data); // Emitimos los resultados al componente padre
+    songsStore.setSongs(data.data); // Guardamos las canciones en el store
+    //router.push({ name: 'Buscador2' });//redirigimos a la vista de info
+    if (route.name !== 'Buscador2') {
+      router.push({ name: 'Buscador2' });
+    }
+    if (route.name !== 'Buscador2') {
+      router.push({ name: 'Buscador2' });
+    }
   } catch (error) {
     console.error(error.message);
   }

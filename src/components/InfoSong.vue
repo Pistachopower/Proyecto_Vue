@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>{{song?.title }}</h2>
-    <p>{{song?.duration }}</p>
+    <h2>titulo {{song?.title }}</h2>
+    <p>duracion {{song?.duration }}</p>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  song.value = props;
+  song.value = props.song;
   console.log(song.value);
 });
 

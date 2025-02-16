@@ -59,13 +59,14 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed, onMounted,watch } from "vue";
 import SearchBar from "../components/SearchBar.vue"; // Importa el componente hijo
 import { useFavoritesStore } from '@/stores/favorites';
 import MusicPlayer from "@/components/MusicPlayer.vue";
 import { useMusicStore } from "@/stores/music"; // Store global de música
 import { useInfoStore } from '@/stores/info';
 import { useRouter } from 'vue-router';
+import { useListaSongs } from "@/stores/buscar"; // Importa el store de canciones
 
 const songs = ref([]); // Estado para almacenar la lista de canciones
 const musicStore = useMusicStore(); // Usamos la store para manejar la canción globalmente
@@ -73,6 +74,9 @@ const favoritesStore = useFavoritesStore();
 const currentSong = ref(null); // Canción actualmente en reproducción
 const infoStore = useInfoStore(); // Se inicializa la store de info
 const router = useRouter(); // Se inicializa el router
+const songsStore = useListaSongs(); // Instancia el store de canciones
+const listaSongsStore = computed(() => songsStore.songs);
+
 
 const setCurrentSong = (song) => {
   musicStore.setCurrentSong(song); // Cambia la canción en el reproductor global
@@ -98,6 +102,26 @@ function guardarCancionStore(song) {
   infoStore.setInfoData(song); // Guardamos la canción en la store
   router.push({ name: 'InfoView' }); // Redirigimos a la vista de info
 }
+
+
+onMounted(() => {
+  songsStore.songs;
+  if (!songsStore.songs){
+    return
+  }
+
+  if (songsStore.songs.length > 0) {
+    songs.value = songsStore.songs;
+  }
+
+  console.log(listaSongsStore.value);
+});
+
+watch(listaSongsStore, (newSongs) => {
+  console.log(newSongs);
+
+  songs.value = newSongs;
+});
 </script>
 
 <style scoped>
